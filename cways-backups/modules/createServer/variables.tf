@@ -1,4 +1,4 @@
-variable "cloudways_apikey_file_path" {
+variable "CW_API_KEY" {
   description = "Cloudways API key path for server deployment"
 }
 

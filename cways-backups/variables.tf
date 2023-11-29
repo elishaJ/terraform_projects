@@ -22,10 +22,7 @@ variable "zone" {
   description = "Default zone for GCP project"
 }
 
-variable "cloudways_apikey_file_path" {
-  type        = string
-  #default     = "/home/ali/.creds/cways_api_key"
-  default     = "/home/ali/.creds/cways_api_key1"
+variable "CW_API_KEY" {
   description = "Cloudways API key path for server deployment"
 }
 

@@ -29,7 +29,7 @@ resource "null_resource" "createServer" {
       }
 
       email=${var.cloudways-email}
-      api_key=$(cat "${var.cloudways_apikey_file_path}")
+      api_key=$(cat "${var.CW_API_KEY}")
       
       # Generate access token
       get_accessToken(){
