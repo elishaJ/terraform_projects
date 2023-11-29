@@ -13,7 +13,7 @@ jobs:
     env:
       TF_VAR_cloudways_email: ${{ secrets.CLOUDWAYS_EMAIL }}
       TF_VAR_cloudways_apikey_file_path: ${{ secrets.CW_API_KEY }}
-      TF_PWD: cways-backups
+      TF_PWD: ./cways-backups
       
     steps:
       - name: Checkout code
