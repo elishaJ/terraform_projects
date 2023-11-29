@@ -8,17 +8,16 @@ on:
 permissions:
       id-token: write # This is required for aws oidc connection
       contents: read # This is required for actions/checkout
-      
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
 
     env:
-      TF_VAR_cloudways_email: ${{ secrets.CLOUDWAYS_EMAIL }}
-      TF_VAR_cloudways_apikey_file_path: ${{ secrets.CW_API_KEY }}
+      TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
       AWS_REGION: us-east-1
       TF_LOG: INFO
-      
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,28 +35,25 @@ jobs:
           terraform_version: 1.0.0
 
       - name: Terraform Init
-        working-directory: cways-backups  # Use the relative path
+        working-directory: cways-backups
         run: terraform init
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
 
-      # Checks that all Terraform configuration files adhere to a canonical format
-      #- name: Terraform Format
-      # run: terraform fmt -check
-      #  working-directory: cways-backups
-
-      # Generates an execution plan for Terraform
       - name: Terraform Plan
-        run: terraform plan -input=false
+        id: terraform_plan
+        run: |
+          terraform plan -input=false
+          echo "::set-output name=exit_code::${{ steps.terraform_plan.outcome }}"
         working-directory: cways-backups
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
-
+          TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.terraform_plan.outputs.exit_code == 'success'
         run: terraform apply -auto-approve -input=false
         working-directory: cways-backups
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
-
+          TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
