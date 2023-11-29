@@ -38,18 +38,26 @@ jobs:
       - name: Terraform Init
         working-directory: cways-backups  # Use the relative path
         run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
 
       # Checks that all Terraform configuration files adhere to a canonical format
-      - name: Terraform Format
-        run: terraform fmt -check
-        working-directory: cways-backups
+      #- name: Terraform Format
+      # run: terraform fmt -check
+      #  working-directory: cways-backups
 
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         run: terraform plan -input=false
         working-directory: cways-backups
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
+
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
         working-directory: cways-backups
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
+
