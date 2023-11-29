@@ -137,7 +137,7 @@ resource "null_resource" "createServer" {
       _success "SSH key setup completed."
 
       do_task() {
-        rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" ${var.key-path}tf-sa-identity.json $sshUser@$srvIP:/home/master/.tf-sa-identity.json
+        rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" ${path.root}tf-sa-identity.json $sshUser@$srvIP:/home/master/.tf-sa-identity.json
         rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" \
       --rsync-path="mkdir -p /home/master/gcp_backups/ && rsync" \
       ${path.root}/backup_script.sh $sshUser@$srvIP:/home/master/gcp_backups/backup_script.sh

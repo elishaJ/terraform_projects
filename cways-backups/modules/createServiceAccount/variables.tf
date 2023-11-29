@@ -7,8 +7,3 @@ variable "project-name" {
 variable "cways-bucket-name" {
   type = string
 }
-
-variable "key-path" {
-  type = string
-  default = "/home/ali/.creds/"
-}

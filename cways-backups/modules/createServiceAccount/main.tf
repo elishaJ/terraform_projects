@@ -21,6 +21,6 @@ resource "google_service_account_key" "key" {
 
 resource "local_file" "myaccountjson" {
 content     = base64decode(google_service_account_key.key.private_key)
-filename = "${var.key-path}tf-sa-identity.json"
+filename = "${path.root}.tf-sa-identity.json"
 file_permission = "0600"
 }
