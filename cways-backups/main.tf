@@ -29,8 +29,3 @@ module "createServiceAccount" {
  module "createServer" {
   source            = "./modules/createServer"
 }
-
-# Module to delete server
- module "deleteServer" {
-  source = "./modules/deleteServer"
-}
