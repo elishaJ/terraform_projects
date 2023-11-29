@@ -13,7 +13,6 @@ jobs:
     env:
       TF_VAR_cloudways_email: ${{ secrets.CLOUDWAYS_EMAIL }}
       TF_VAR_cloudways_apikey_file_path: ${{ secrets.CW_API_KEY }}
-      TF_PWD: ./cways-backups
       
     steps:
       - name: Checkout code
@@ -23,22 +22,22 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.0
-          
+
       - name: Terraform Init
         run: terraform init
-        working-directory: $TF_PWD
-  
+        working-directory: cways-backups  # Use the relative path
+
       # Checks that all Terraform configuration files adhere to a canonical format
       - name: Terraform Format
         run: terraform fmt -check
-        working-directory: $TF_PWD
-  
+        working-directory: cways-backups
+
       # Generates an execution plan for Terraform
       - name: Terraform Plan
         run: terraform plan -input=false
-        working-directory: $TF_PWD
+        working-directory: cways-backups
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
-        working-directory: $TF_PWD
+        working-directory: cways-backups
