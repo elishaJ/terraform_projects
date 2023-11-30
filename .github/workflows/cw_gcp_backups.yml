@@ -47,20 +47,16 @@ jobs:
         run: terraform validate -no-color
         working-directory: cways-backups
       
-      - name: Terraform Plan
+        - name: Terraform Plan
         id: terraform_plan
         run: |
-          terraform plan -input=false -no-color -var="CW_API_KEY=${TF_VAR_CW_API_KEY}" -var="GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}"
+          terraform plan -input=false -var="CW_API_KEY=${{ secrets.CW_API_KEY }}" -var="GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS }}"
           echo "::set-output name=exit_code::${{ steps.terraform_plan.outcome }}"
         working-directory: cways-backups
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
-
+      
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.terraform_plan.outputs.exit_code == 'success'
-        run: terraform apply -auto-approve -input=false -no-color -var="CW_API_KEY=${TF_VAR_CW_API_KEY}" -var="GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}"
+        run: |
+          terraform apply -auto-approve -input=false -var="CW_API_KEY=${{ secrets.CW_API_KEY }}" -var="GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS }}"
         working-directory: cways-backups
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
+      
