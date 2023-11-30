@@ -59,7 +59,6 @@ jobs:
 
       - name: Terraform Apply
         id: terraform_apply
-        if: steps.terraform_plan.outputs.exit_code == 'success'
         run: terraform apply -auto-approve -input=false -var="CW_API_KEY=${TF_VAR_CW_API_KEY}" -var="GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}"
         working-directory: cways-backups
         env:
