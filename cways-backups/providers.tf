@@ -22,7 +22,7 @@ terraform {
 
 provider "google" {
   # Configuration options
-  #credentials = file("${sec.terraform-credentials-file}")
+  credentials = var.GOOGLE_CREDENTIALS
   project     = var.project-name
   region      = var.region
   zone        = var.zone
