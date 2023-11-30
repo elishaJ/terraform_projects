@@ -40,7 +40,7 @@ jobs:
             terraform init
             echo "GCP creds= $GOOGLE_CREDENTIALS"
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           
       - name: Terraform Validate
         id: validate
