@@ -27,5 +27,6 @@ module "createServiceAccount" {
 
 # Module for creating server
  module "createServer" {
-  source            = "./modules/createServer"
+  source = "./modules/createServer"
+  CW_API_KEY = var.CW_API_KEY
 }

@@ -1,7 +1,11 @@
-variable "terraform-credentials-file" {
+/* variable "terraform-credentials-file" {
   type        = string
   default     = "/home/ali/.creds/terraform-service-account-credentials.json"
   description = "Service account used by Terraform to authenticate to GCP"
+} */
+
+variable "CW_API_KEY" {
+  description = "Cloudways API key path for server deployment"
 }
 
 variable "project-name" {
@@ -22,9 +26,9 @@ variable "zone" {
   description = "Default zone for GCP project"
 }
 
-variable "CW_API_KEY" {
+/* variable "CW_API_KEY" {
   description = "Cloudways API key path for server deployment"
-}
+} */
 
 variable "cloudways-email" {
   type        = string
