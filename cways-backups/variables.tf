@@ -8,6 +8,10 @@
   description = "Cloudways API key path for server deployment"
 } */
 
+variable "GOOGLE_CREDENTIALS" {
+  description = "GCP service account key for terraform authentication"
+}
+
 variable "project-name" {
   type        = string
   default     = "friendly-chat-22d17"
