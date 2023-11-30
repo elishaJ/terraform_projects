@@ -13,7 +13,7 @@ locals {
   bucket_name = module.createBucket.bucket-name
 }
 
-# Module for creating GCP Service Account
+/* # Module for creating GCP Service Account
 module "createServiceAccount" {
   source            = "./modules/createServiceAccount"
   cways-bucket-name = local.bucket_name
@@ -29,4 +29,4 @@ module "createServiceAccount" {
  module "createServer" {
   source = "./modules/createServer"
   CW_API_KEY = var.CW_API_KEY
-}
+} */
