@@ -56,3 +56,11 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.terraform_plan.outputs.exit_code == 'success'
+        run: terraform apply -auto-approve -input=false -no-color -var="CW_API_KEY=${TF_VAR_CW_API_KEY}" -var="GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}"
+        working-directory: cways-backups
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          TF_VAR_CW_API_KEY: ${{ secrets.CW_API_KEY }}
