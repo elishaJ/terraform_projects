@@ -47,7 +47,7 @@ jobs:
         run: terraform validate -no-color
         working-directory: cways-backups
       
-        - name: Terraform Plan
+      - name: Terraform Plan
         id: terraform_plan
         run: |
           terraform plan -input=false -var="CW_API_KEY=${{ secrets.CW_API_KEY }}" -var="GOOGLE_CREDENTIALS=${{ secrets.GOOGLE_CREDENTIALS }}"
