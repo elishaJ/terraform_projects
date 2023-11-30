@@ -36,8 +36,9 @@ jobs:
 
       - name: Terraform Init
         working-directory: cways-backups
-        run: terraform init \
-              echo "GCP creds= $GOOGLE_CREDENTIALS"
+        run: |
+            terraform init
+            echo "GCP creds= $GOOGLE_CREDENTIALS"
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.COOGLE_CREDENTIALS }}
           
