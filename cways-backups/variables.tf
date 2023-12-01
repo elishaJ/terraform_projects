@@ -1,6 +1,12 @@
-variable "CW_API_KEY" {
+/* variable "terraform-credentials-file" {
+  type        = string
+  default     = "/home/ali/.creds/terraform-service-account-credentials.json"
+  description = "Service account used by Terraform to authenticate to GCP"
+} */
+
+/* variable "CW_API_KEY" {
   description = "Cloudways API key path for server deployment"
-}
+} */
 
 variable "GOOGLE_CREDENTIALS" {
   description = "GCP service account key for terraform authentication"
