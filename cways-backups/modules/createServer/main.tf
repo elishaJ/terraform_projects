@@ -59,10 +59,8 @@ resource "null_resource" "createServer" {
 
       # Store new server ID
       server_id=$(jq -r .server.id $dir/.tmp_files/tf-new-server.json);
-      #echo ServerID: $server_id;
-      export TF_VAR_serverID=$server_id;
-
-      # Operation ID
+      
+      # Get operation ID
       op_id=$(jq -r .operation_id $dir/.tmp_files/tf-new-server.json);
       
       # Put script to sleep during server creation process
@@ -88,6 +86,7 @@ resource "null_resource" "createServer" {
       done
       _success "Server created sucessfully"
 
+      # Fetch server data in JSON format
       get_serverInfo() {
         curl -s -X GET \
         -H 'Accept: application/json' \
@@ -96,10 +95,11 @@ resource "null_resource" "createServer" {
       }
       get_serverInfo;
       
+      # Filter SSH connection details
       srvIP=$(jq -r '.servers[] | select(.id == "'$server_id'") | .public_ip' $dir/.tmp_files/servers.json)
       sshUser=$(jq -r '.servers[] | select(.id == "'$server_id'") | .master_user' $dir/.tmp_files/servers.json)
 
-      # Configure server backups and enable local backups
+      # Configure server backups schedule and enable local backups
       server_backup_data="{\"server_id\": \"$server_id\", \"backup_frequency\": \"${var.backup_frequency}\", \"backup_retention\": \"${var.backup_retention}\", \"local_backups\": ${var.local_backups}, \"backup_time\": \"${var.backup_time}\"}"
       curl -s -X POST \
         -H 'Accept: application/json' \
@@ -116,7 +116,7 @@ resource "null_resource" "createServer" {
       create_SSHkey;
       _success "SSH key created"
       
-      # Create JSON data to be used in SSH creation API request for servers
+      # Create JSON data to be used in upload SSH Key API request
       create_keyFile () {
         echo "{" > $dir/.tmp_files/keyData.json
         echo "\"server_id\": \"$server_id\"," >> $dir/.tmp_files/keyData.json
@@ -136,6 +136,7 @@ resource "null_resource" "createServer" {
       
       _success "SSH key setup completed."
 
+      # Install GCP SDK and set up GCP backup cron
       do_task() {
         rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" $dir/.tf-sa-identity.json $sshUser@$srvIP:/home/master/.tf-sa-identity.json
         rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" \
