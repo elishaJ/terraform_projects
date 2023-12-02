@@ -11,8 +11,8 @@ It includes the following Terraform modules:
    - Creates a service account on GCP.
    - Provides service account access to the bucket created in the first module.
    - Creates a key to authenticate with GCP.
-4) Create server
+4) Create server:
    - Creates a new server on Cloudways.
    - Transfers backup script to the newly created server.
-   - Install GCP SDK on server.
+   - Installs GCP SDK on server.
    - Sets up cron to upload backups to GCP bucket.
