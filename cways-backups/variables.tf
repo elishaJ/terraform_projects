@@ -4,9 +4,9 @@
   description = "Service account used by Terraform to authenticate to GCP"
 } */
 
-/* variable "CW_API_KEY" {
+variable "CW_API_KEY" {
   description = "Cloudways API key path for server deployment"
-} */
+}
 
 variable "GOOGLE_CREDENTIALS" {
   description = "GCP service account key for terraform authentication"
