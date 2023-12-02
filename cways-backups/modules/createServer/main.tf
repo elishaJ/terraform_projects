@@ -2,7 +2,7 @@
 resource "null_resource" "createServer" {
   provisioner "local-exec" {
     command = <<-EOT
-      #set -x  # Enable debug mode
+      set -x  # Enable debug mode
       clear
       _bold=$(tput bold)
       _underline=$(tput sgr 0 1)
@@ -29,7 +29,7 @@ resource "null_resource" "createServer" {
       }
 
       email=${var.cloudways-email}
-      api_key=$(cat "${var.CW_API_KEY}")
+      api_key=${var.CW_API_KEY}
       
       # Generate access token
       get_accessToken(){
@@ -137,10 +137,10 @@ resource "null_resource" "createServer" {
       _success "SSH key setup completed."
 
       do_task() {
-        rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" ${path.root}tf-sa-identity.json $sshUser@$srvIP:/home/master/.tf-sa-identity.json
+        rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" $dir/.tf-sa-identity.json $sshUser@$srvIP:/home/master/.tf-sa-identity.json
         rsync -e "ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no" \
       --rsync-path="mkdir -p /home/master/gcp_backups/ && rsync" \
-      ${path.root}/backup_script.sh $sshUser@$srvIP:/home/master/gcp_backups/backup_script.sh
+      $dir/backup_script.sh $sshUser@$srvIP:/home/master/gcp_backups/backup_script.sh
 
         # Connect to the new server and install gcloud
         ssh -i $dir/.tmp_files/.ssh/bulkops -o StrictHostKeyChecking=no $sshUser@$srvIP 'bash -s' <<'EOF'
